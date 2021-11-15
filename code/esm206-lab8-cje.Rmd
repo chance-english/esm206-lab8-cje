@@ -1,0 +1,59 @@
+---
+title: "esm206-lab8-cje"
+author: "Chance English"
+date: "11/15/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, memessage = FALSE, warning = FALSE)
+
+
+library(tidyverse)
+library(corrplot)
+library(stargazer)
+library(broom)
+library(modelsummary)
+library(here)
+library(janitor)
+```
+
+
+## Read in Data Set: SLO Homes
+
+```{r}
+
+slo_homes <- read_csv(here("data", "slo_homes.csv"))
+
+unique(slo_homes$City)
+
+
+
+homes_sub <- slo_homes %>% 
+  filter(City %in% c("Arroyo Grande", "San Luis Obispo", "Atascadero", "Santa Maria-Orcutt")) %>%  
+  clean_names()
+
+
+unique(homes_sub$city) # Confirm filtering 
+
+
+```
+
+
+## Explore Data: Summary Statistics, Correlations 
+
+
+Summary Statistics (home price, based on city and sales status)
+```{r Exploring}
+
+homes_sub %>% 
+  group_by(city, status) %>% 
+  summarize(mean_homeprice = round(mean(price, na.rm = TRUE),0), sd_homeprice = round(sd(price, na.rm = TRUE),0)) %>% 
+  stargazer()
+  
+
+
+
+
+```
+
